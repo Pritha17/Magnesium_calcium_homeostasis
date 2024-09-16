@@ -161,7 +161,7 @@ else
     D3_influx = (k_min_conv + delta_max_D3act * F_D3_act) * (D3_inact/D3p_norm);
     
     PTH_impact_D3_deg = 1 / (1 + gamma_deg_PTHp * PTHp_norm * PTHp_con);
-    Mg_impact_D3_inact = Mgp_con / ((K_D3/Mgp_norm) + Mgp_con);
+    Mg_impact_D3_inact = Mgp_con^4 / ((K_D3/Mgp_norm)^4 + Mgp_con^4);
      
     deg_D3_act = (k_deg_D3 * (PTH_impact_D3_deg + Mg_impact_D3_inact)) * D3p_con;
     
