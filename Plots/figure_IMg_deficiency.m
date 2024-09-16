@@ -58,7 +58,7 @@ set(gca, 'XTickLabel',x_SS_1, 'XTick',1:numel(x_SS_1))
 
 ylabel('Fractional change in concentration')
 
-legend({'', ['50%' DOWN 'IMg'], ['75%' DOWN 'IMg'], ['10%' DOWN 'IMg']},...
+legend({'', ['50%' DOWN 'IMg'], ['75%' DOWN 'IMg'], ['90%' DOWN 'IMg']},...
         'fontsize', fleg, 'location','northeast')
 title('(A) Plasma content')
 set(gca, 'fontsize', f_gca)
