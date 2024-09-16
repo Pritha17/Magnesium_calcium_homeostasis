@@ -114,7 +114,7 @@ D3p_con  = D3_p/Vp;
 if PTHg_fixed
     dydt(1) = 0;
 else
-    h = exp(50*Mgp_norm * (Mgp_con - 0.4/Mgp_norm)) / (1 + exp(50*Mgp_norm * (Mgp_con - 0.4/Mgp_norm)));
+    h = (Mgp_con/0.4)^50 / (1 + (Mgp_con/0.4)^50);
 
     PTHg_prod_basal = k_prod_PTHg / PTHg_norm;
     PTHg_prod_effect_D3 = 1 / (1 + gamma_prod_D3 * D3p_norm * D3p_con);
@@ -123,9 +123,9 @@ else
     PTHg_deg = k_PTHg_deg * PTH_g;
 
     normal_high_Mg_effect = ((gamma_Ca / (Cap_norm*Cap_con)) ^ gamma_p) * ...
-    (beta_exo_PTHg - 1 / (1 + exp(-Mgp_norm*(Mgp_con - Cm_half/Mgp_norm))));
+    (beta_exo_PTHg - 1 / (1 + (Cm_half/Mgp_con)^2));
     
-    low_Mg_effect = gamma_Mg / (1 + exp(-Mgp_norm * (Mgp_con - 0.4/Mgp_norm)));
+    low_Mg_effect = gamma_Mg / (1 + 0.25/Mgp_con);
     
     F_Ca_Mg = h * normal_high_Mg_effect + (1-h) * low_Mg_effect;
     PTHg_exocytosis = F_Ca_Mg * PTH_g;
@@ -152,7 +152,7 @@ else
     D3_impact_D3_act  = 1 / (1 + gamma_conv_D3 * D3p_norm * D3p_con);
     Mg_impact_D3_act_1 = delta_Mg_act * Mgp_con^4 / ((K1_Mg_act/Mgp_norm)^4 + Mgp_con^4);
     Mg_impact_D3_act_2 = delta_Mg_act * (K2_Mg_act/Mgp_norm)^4 / ((K2_Mg_act/Mgp_norm)^4 + Mgp_con^4);
-    h_m = exp(50*Mgp_norm * (2.4/Mgp_norm - Mgp_con)) / (1 + exp(50*Mgp_norm * (2.4/Mgp_norm - Mgp_con)));
+    h_m = 1 / (1 + (Mgp_con/2.5)^50);
     
     Mg_impact_D3_act = h_m * Mg_impact_D3_act_1 + (1-h_m) * Mg_impact_D3_act_2;
     
