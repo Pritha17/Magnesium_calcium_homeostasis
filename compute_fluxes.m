@@ -98,7 +98,7 @@ D3p_con  = D3_p./Vp;
 
 
 % Parathyroid glands
-h = exp(50 * Mgp_norm * (Mgp_con - 0.4/Mgp_norm)) / (1 + exp(50 * Mgp_norm * (Mgp_con - 0.4/Mgp_norm)));
+h = (Mgp_con/0.4)^50 / (1 + (Mgp_con/0.4)^50);
 
 vals.PTHg_prod_basal = k_prod_PTHg / PTHg_norm;
 vals.PTHg_prod_effect_D3 = 1 ./ (1 + gamma_prod_D3 * D3p_norm * D3p_con);
@@ -107,9 +107,9 @@ vals.PTHg_synthesis = vals.PTHg_prod_basal * vals.PTHg_prod_effect_D3;
 vals.PTHg_deg = k_PTHg_deg * PTH_g;
 
 vals.normal_high_Mg_effect = ((gamma_Ca ./ (Cap_norm*Cap_con)) ^ gamma_p) * ...
-    (beta_exo_PTHg - 1 ./ (1 + exp(-Mgp_norm*(Mgp_con - Cm_half/Mgp_norm))));
+    (beta_exo_PTHg - 1 ./ (1 + (Cm_half/Mgp_con)^2));
 
-vals.low_Mg_effect = gamma_Mg ./ (1 + exp(-Mgp_norm * (Mgp_con - 0.4/Mgp_norm)));
+vals.low_Mg_effect = 0.01 ./ (1 + 0.25/Mgp_con);
 vals.F_Ca_Mg = h * vals.normal_high_Mg_effect + (1-h) * vals.low_Mg_effect;
 vals.PTHg_exocytosis = vals.F_Ca_Mg * PTH_g;
 
@@ -123,14 +123,14 @@ vals.Ca_impact_D3_act  = 1 ./ (1 + gamma_conv_Ca * Cap_norm * Cap_con);
 vals.D3_impact_D3_act  = 1 ./ (1 + gamma_conv_D3 * D3p_norm * D3p_con);
 vals.Mg_impact_D3_act_1 = delta_Mg_act * Mgp_con.^4 / ((K1_Mg_act/Mgp_norm).^4 + Mgp_con.^4);
 vals.Mg_impact_D3_act_2 = delta_Mg_act * (K2_Mg_act/Mgp_norm)^4 / ((K2_Mg_act/Mgp_norm)^4 + Mgp_con^4);
-h_m = exp(50*Mgp_norm * (2.4/Mgp_norm - Mgp_con)) / (1 + exp(50*Mgp_norm * (2.4/Mgp_norm - Mgp_con)));
+h_m = 1 / (1 + (Mgp_con/2.5)^50);
 vals.Mg_impact_D3_act = h_m * vals.Mg_impact_D3_act_1 + (1-h_m) * vals.Mg_impact_D3_act_2;
 
 vals.F_D3_act = vals.PTH_impact_D3_act * vals.Ca_impact_D3_act * vals.D3_impact_D3_act * vals.Mg_impact_D3_act; % unitless
 vals.D3_influx = (k_min_conv + delta_max_D3act * vals.F_D3_act) * (D3_inact/D3p_norm);
 
 vals.PTH_impact_D3_deg = 1 ./ (1 + gamma_deg_PTHp * PTHp_norm * PTHp_con);
-vals.Mg_impact_D3_inact = Mgp_con ./ ((K_D3/Mgp_norm) + Mgp_con);
+vals.Mg_impact_D3_inact = Mgp_con.^4 / ((K_D3/Mgp_norm).^4 + Mgp_con.^4);
 vals.deg_D3_act = (k_deg_D3 * (vals.PTH_impact_D3_deg + vals.Mg_impact_D3_inact)) * D3p_con;
 
 % Intestinal compartment
@@ -181,7 +181,11 @@ vals.Urine_excretion_Mg = (1 - vals.Renal_frac_reab_Mg) * vals.Renal_filtration_
 vals.PTHp_res_effect = delta_res_max*0.2*PTHp_con.^2./(PTHp_con.^2 + (K_PTHp_res/PTHp_norm).^2);
 vals.D3_res_effect   = delta_res_max*0.8*D3p_con.^2./(D3p_con.^2 + (K_D3p_res/D3p_norm).^2);
 vals.Bone_resorption_Ca = Gamma_res_min + vals.PTHp_res_effect + vals.D3_res_effect;
-vals.Bone_resorption_Mg = 0.025 * (Gamma_res_min + vals.PTHp_res_effect + vals.D3_res_effect);
+if NMg_s <= 0
+    vals.Bone_resorption_Mg = 0;
+else
+    vals.Bone_resorption_Mg = 0.025 * (Gamma_res_min + vals.PTHp_res_effect + vals.D3_res_effect);
+end
 
 % bone fast pool calcium
 vals.Plasma_to_FastPool_Ca = k_pf_Ca*Cap_con*Vp;
