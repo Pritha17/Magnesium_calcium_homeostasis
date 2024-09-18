@@ -269,7 +269,11 @@ end
 if NMgs_fixed
     dydt(9) = 0;
 else
-    dydt(9) = Bone_accretion_Mg - Bone_resorption_Mg/NMgs_norm;
+    if NMg_s <= 0
+        dydt(9) = 0;
+    else
+        dydt(9) = Bone_accretion_Mg - Bone_resorption_Mg/NMgs_norm;
+    end
 end
 
 end
