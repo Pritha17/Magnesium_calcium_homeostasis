@@ -9,7 +9,7 @@ end
 param_names = strings([1,numchck]);
 param_vals = zeros(1,numchck);
 for i=1:numchck
-    param_names(i) = extractBefore(lines(i), "=");
+    param_names(i) = extractBefore(lines(i), " =");
     val_parse = extractAfter(lines(i), "=");
     pval = extractBefore(val_parse, ";");
     param_vals(i) = str2double(extractAfter(pval, " "));
