@@ -11,12 +11,12 @@ Vp = param_vals(4);
 
 IMg_change = [1, 0.5, 0.25, 0.1];
 
-base_IMg = param_vals(24);
+base_IMg = param_vals(28);
 
 for i = 1:length(IMg_change)
     IMg_change_val = IMg_change(i);
     IMg_new_val = IMg_change_val * base_IMg;
-    param_vals(24) = IMg_new_val;
+    param_vals(28) = IMg_new_val;
 
     % solving ODE with new IMg
     tspan = [0 262800]; % 6 months
