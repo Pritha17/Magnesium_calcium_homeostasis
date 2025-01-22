@@ -9,4 +9,6 @@ This is the mathematical model of magnesium and calcium homeostasis and their re
 5. To simuate the effect of calcitriol deficiency, run sim_25D_deficiency.m file and to plot the results run Plots/figure_25D_deficiency.m file.
 
 # Related work
-Please cite appropriate paper(s) when using this model.
+Please cite the foolowing paper when using this model.
+
+* [2024 Dutta et al. "Modeling calcium and magnesium balance: Regulation by calciotropic hormones and adaptations under varying dietary intake"](https://www.cell.com/iscience/fulltext/S2589-0042(24)02302-2)
